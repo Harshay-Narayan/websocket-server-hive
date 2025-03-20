@@ -4,7 +4,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config()
 const app = express();
 const server = createServer(app);
 const port = process.env.PORT || 3001;
