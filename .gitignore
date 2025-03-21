@@ -11,7 +11,6 @@ pnpm-debug.log*
 pm2.log
 
 # Build artifacts
-dist/
 build/
 .tmp/
 
