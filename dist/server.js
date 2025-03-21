@@ -38,5 +38,4 @@ io.on("connection", (socket) => {
         io.to(receiverId).emit("private_chat", { senderId, message });
     });
 });
-console.log(users);
-server.listen(port, () => console.log(`Example app listening on port ${port}`));
+server.listen(port, () => console.log(`websocket server listening on port ${port}`));
