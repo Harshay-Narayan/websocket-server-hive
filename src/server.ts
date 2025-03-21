@@ -4,7 +4,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 const app = express();
 const server = createServer(app);
 const port = process.env.PORT || 3001;
@@ -12,7 +12,7 @@ const port = process.env.PORT || 3001;
 console.log(__dirname, port);
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_ORIGIN,
     credentials: true,
   })
 );
@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_ORIGIN,
   },
 });
 
