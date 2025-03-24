@@ -17,17 +17,12 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("✅ WebSocket Server is Running!");
-});
-
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_ORIGIN,
   },
 });
 
-const users: Record<string, string> = {};
 
 io.on("connection", (socket) => {
   socket.on("authenticate", ({ userId }) => {
@@ -38,6 +33,14 @@ io.on("connection", (socket) => {
     console.log(senderId, receiverId, message);
     io.to(receiverId).emit("private_chat", { senderId, message });
   });
+  socket.on("typing", ({ senderId, receiverId }) => {
+    console.log(`${senderId} ${receiverId}`);
+    io.to(receiverId).emit("typing", { senderId, receiverId });
+  });
+});
+
+app.get("/", (req, res) => {
+  res.send("✅ WebSocket Server is Running!");
 });
 
 server.listen(port, () =>
