@@ -18,16 +18,12 @@ app.use((0, cors_1.default)({
     origin: process.env.CLIENT_ORIGIN,
     credentials: true,
 }));
-app.get("/", (req, res) => {
-    res.send("✅ WebSocket Server is Running!");
-});
 const io = new socket_io_1.Server(server, {
     cors: {
         origin: process.env.CLIENT_ORIGIN,
     },
 });
 exports.io = io;
-const users = {};
 io.on("connection", (socket) => {
     socket.on("authenticate", ({ userId }) => {
         console.log("Authenticated " + userId);
@@ -37,5 +33,12 @@ io.on("connection", (socket) => {
         console.log(senderId, receiverId, message);
         io.to(receiverId).emit("private_chat", { senderId, message });
     });
+    socket.on("typing", ({ senderId, receiverId }) => {
+        console.log(`${senderId} ${receiverId}`);
+        io.to(receiverId).emit("typing", { senderId, receiverId });
+    });
+});
+app.get("/", (req, res) => {
+    res.send("✅ WebSocket Server is Running!");
 });
 server.listen(port, () => console.log(`websocket server listening on port ${port}`));
