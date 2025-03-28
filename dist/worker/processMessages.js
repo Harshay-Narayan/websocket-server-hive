@@ -18,7 +18,6 @@ const redis_1 = require("../lib/redis");
 const logger_1 = __importDefault(require("../utils/logger"));
 function processMessages() {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
         logger_1.default.info("Process Messages triggered");
         try {
             let messages = [];
@@ -38,13 +37,13 @@ function processMessages() {
                 logger_1.default.info("Message DB insertion successful");
             }
             catch (error) {
-                logger_1.default.error("Meesage DB insertion API failed: ", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+                logger_1.default.error("Meesage DB insertion API failed: ", { error });
                 yield redis_1.redis.lpush("message_queue", ...messages.map((message) => JSON.stringify(message)));
             }
             logger_1.default.info("Process Messages completed");
         }
         catch (error) {
-            logger_1.default.error("Error occured: " + error);
+            logger_1.default.error("Error in processing messages", { error });
         }
     });
 }

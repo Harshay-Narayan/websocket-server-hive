@@ -22,10 +22,7 @@ export async function processMessages() {
       }
       logger.info("Message DB insertion successful");
     } catch (error: any) {
-      logger.error(
-        "Meesage DB insertion API failed: ",
-        error.response?.data || error.message
-      );
+      logger.error("Meesage DB insertion API failed: ", { error });
       await redis.lpush(
         "message_queue",
         ...messages.map((message) => JSON.stringify(message))
@@ -33,6 +30,6 @@ export async function processMessages() {
     }
     logger.info("Process Messages completed");
   } catch (error) {
-    logger.error("Error occured: " + error);
+    logger.error("Error in processing messages", { error });
   }
 }

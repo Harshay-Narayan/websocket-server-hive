@@ -1,14 +1,16 @@
 import Redis from "ioredis";
+import logger from "../utils/logger";
 
-const redis = new Redis(
-  "rediss://default:AYqrAAIjcDFkYzZmOWMzMTUzZGY0ZGVlYmM1MzJlYTk4OTljMjA2MnAxMA@usable-condor-35499.upstash.io:6379"
-);
+const redis = new Redis(process.env.REDIS_URL!);
 
-redis.on("connect", () => {
-  console.log("Connected to Redis Cloud");
+redis.on("connecting", () => {
+  logger.info("Connecting to Redis cloud...");
+});
+redis.on("ready", () => {
+  logger.info("Connected to Redis Cloud...");
 });
 redis.on("error", (err) => {
-  console.log("Redis error: " + err);
+  logger.error("Redis error: " + err);
 });
 
 export { redis };
