@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.redis = void 0;
 const ioredis_1 = __importDefault(require("ioredis"));
 const redis = new ioredis_1.default({
-    port: 19699, // Redis port
-    host: "redis-19699.c301.ap-south-1-1.ec2.redns.redis-cloud.com", // Redis host
-    username: "default", // needs Redis >= 6
-    password: "CU0spzXnkQPncsOoyeQciZn5sfME2Zuy",
-    db: 0, // Defaults to 0
+    port: Number(process.env.REDIS_PORT),
+    host: process.env.REDIS_HOST,
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
+    db: 0,
 });
 exports.redis = redis;
 redis.on("connect", () => {

@@ -14,6 +14,8 @@
     "test": "test"
   },
   "dependencies": {
+    "@logtail/node": "^0.5.2",
+    "@logtail/winston": "^0.5.2",
     "axios": "^1.8.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
