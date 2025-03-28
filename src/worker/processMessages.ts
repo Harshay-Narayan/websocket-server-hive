@@ -1,8 +1,9 @@
 import axios from "axios";
 import { redis } from "../lib/redis";
+import logger from "../utils/logger";
 
 export async function processMessages() {
-  console.log("Run");
+  logger.info("Process Messages triggered");
   try {
     let messages = [];
     while (messages.length < 50) {
@@ -19,10 +20,10 @@ export async function processMessages() {
       if (response.status >= 400) {
         throw new Error("API responded with an error.");
       }
-      console.log("Messages successfully stored in DB.");
+      logger.info("Message DB insertion successful");
     } catch (error: any) {
-      console.log(
-        "API response failed: ",
+      logger.error(
+        "Meesage DB insertion API failed: ",
         error.response?.data || error.message
       );
       await redis.lpush(
@@ -30,7 +31,8 @@ export async function processMessages() {
         ...messages.map((message) => JSON.stringify(message))
       );
     }
+    logger.info("Process Messages completed");
   } catch (error) {
-    console.log("Error occured: " + error);
+    logger.error("Error occured: " + error);
   }
 }

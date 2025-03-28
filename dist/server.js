@@ -9,11 +9,12 @@ const http_1 = require("http");
 const cors_1 = __importDefault(require("cors"));
 const socket_io_1 = require("socket.io");
 const dotenv_1 = __importDefault(require("dotenv"));
+const processMessages_1 = require("./worker/processMessages");
+const logger_1 = __importDefault(require("./utils/logger"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
 const port = process.env.PORT || 3001;
-console.log(__dirname, port);
 app.use((0, cors_1.default)({
     origin: process.env.CLIENT_ORIGIN,
     credentials: true,
@@ -26,19 +27,19 @@ const io = new socket_io_1.Server(server, {
 exports.io = io;
 io.on("connection", (socket) => {
     socket.on("authenticate", ({ userId }) => {
-        console.log("Authenticated " + userId);
+        logger_1.default.info("Authenticated " + userId);
         socket.join(userId);
     });
     socket.on("private_chat", ({ senderId, receiverId, message }) => {
-        console.log(senderId, receiverId, message);
+        logger_1.default.info(`private chat sent: ${senderId} to ${receiverId}`);
         io.to(receiverId).emit("private_chat", { senderId, message });
     });
     socket.on("typing", ({ senderId, receiverId }) => {
-        console.log(`${senderId} ${receiverId}`);
         io.to(receiverId).emit("typing", { senderId, receiverId });
     });
 });
 app.get("/", (req, res) => {
     res.send("✅ WebSocket Server is Running!");
 });
-server.listen(port, () => console.log(`websocket server listening on port ${port}`));
+setInterval(processMessages_1.processMessages, 10000);
+server.listen(port, () => logger_1.default.info(`websocket server listening on port ${port}`));
