@@ -5,13 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redis = void 0;
 const ioredis_1 = __importDefault(require("ioredis"));
-const redis = new ioredis_1.default({
-    port: Number(process.env.REDIS_PORT),
-    host: process.env.REDIS_HOST,
-    username: process.env.REDIS_USERNAME,
-    password: process.env.REDIS_PASSWORD,
-    db: 0,
-});
+const redis = new ioredis_1.default("rediss://default:AYqrAAIjcDFkYzZmOWMzMTUzZGY0ZGVlYmM1MzJlYTk4OTljMjA2MnAxMA@usable-condor-35499.upstash.io:6379");
 exports.redis = redis;
 redis.on("connect", () => {
     console.log("Connected to Redis Cloud");
