@@ -3,6 +3,7 @@ import { createServer } from "http";
 import cors from "cors";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
+import { processMessages } from "./worker/processMessages";
 
 dotenv.config();
 const app = express();
@@ -42,7 +43,7 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   res.send("✅ WebSocket Server is Running!");
 });
-
+setInterval(processMessages, 10000);
 server.listen(port, () =>
   console.log(`websocket server listening on port ${port}`)
 );
