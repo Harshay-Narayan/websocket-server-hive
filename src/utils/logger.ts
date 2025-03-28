@@ -1,11 +1,8 @@
-import { Logtail } from "@logtail/node";
-import { LogtailTransport } from "@logtail/winston";
 import { timeStamp } from "console";
 import path from "path";
 import winston from "winston";
 
 const logPath = path.join(__dirname, "../../logs/app.log");
-const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN!);
 
 const logger = winston.createLogger({
   level: "info",
@@ -16,10 +13,7 @@ const logger = winston.createLogger({
     })
   ),
   defaultMeta: { service: "user-service" },
-  transports: [
-    new winston.transports.File({ filename: logPath }),
-    new LogtailTransport(logtail),
-  ],
+  transports: [new winston.transports.Console()],
 });
 
 export default logger;
