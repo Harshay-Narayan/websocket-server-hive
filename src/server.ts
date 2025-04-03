@@ -34,13 +34,39 @@ io.on("connection", (socket) => {
     io.to(receiverId).emit("private_chat", { senderId, message });
   });
   socket.on("typing", ({ senderId, receiverId }) => {
+    console.log("Typing");
+
     io.to(receiverId).emit("typing", { senderId, receiverId });
   });
+  socket.on(
+    "notification",
+    ({ type, firstName, lastName, imageUrl, username, userId, actorId }) => {
+      logger.info(
+        type,
+        firstName,
+        lastName,
+        imageUrl,
+        userId,
+        username,
+        actorId
+      );
+      socket.to(userId).emit("notification", {
+        type,
+        firstName,
+        lastName,
+        imageUrl,
+        userId,
+        username,
+        actorId,
+      });
+    }
+  );
 });
 
 app.get("/", (req, res) => {
   res.send("✅ WebSocket Server is Running!");
 });
+
 setInterval(processMessages, 10000);
 server.listen(port, () =>
   logger.info(`websocket server listening on port ${port}`)
