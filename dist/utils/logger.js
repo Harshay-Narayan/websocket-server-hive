@@ -16,7 +16,6 @@ const logger = winston_1.default.createLogger({
         new winston_1.default.transports.Console({
             format: winston_1.default.format.colorize({ all: true }),
         }),
-        new winston_1.default.transports.File({ filename: logPath }),
     ],
 });
 exports.default = logger;

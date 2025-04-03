@@ -33,3 +33,4 @@ export async function processMessages() {
     logger.error("Error in processing messages", { error });
   }
 }
+
