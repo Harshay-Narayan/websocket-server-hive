@@ -35,7 +35,20 @@ io.on("connection", (socket) => {
         io.to(receiverId).emit("private_chat", { senderId, message });
     });
     socket.on("typing", ({ senderId, receiverId }) => {
+        console.log("Typing");
         io.to(receiverId).emit("typing", { senderId, receiverId });
+    });
+    socket.on("notification", ({ type, firstName, lastName, imageUrl, username, userId, actorId }) => {
+        logger_1.default.info(type, firstName, lastName, imageUrl, userId, username, actorId);
+        socket.to(userId).emit("notification", {
+            type,
+            firstName,
+            lastName,
+            imageUrl,
+            userId,
+            username,
+            actorId,
+        });
     });
 });
 app.get("/", (req, res) => {
